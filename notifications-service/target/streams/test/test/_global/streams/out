@@ -1,0 +1,58 @@
+[0m[[0m[0mdebug[0m] [0m[0mjavaOptions: Vector()[0m
+[0m[[0m[0mdebug[0m] [0m[0mForking tests - parallelism = false[0m
+[0m[[0m[0mdebug[0m] [0m[0mCreate a single-thread test executor[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunner for org.scalacheck.ScalaCheckFramework produced 0 initial tasks for 0 tests.[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunner for org.scalatest.tools.Framework produced 5 initial tasks for 5 tests.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(com.blackfynn.notifications.api.TestNotificationStatic, sbt.ForkMain$SubclassFingerscan@1990a65e, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mTestNotificationStatic:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mcreateIndividualMessages[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should create one notification per user[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 1 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(com.blackfynn.notifications.api.TestRedisPubSub, sbt.ForkMain$SubclassFingerscan@64485a47, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mTestRedisPubSub:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mPong timeout Flow[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should consume pong messages without timing out[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should timeout and error when it does not see a pong[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should error when sent a pong for a different session id[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mSession validator flow[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should stream normally while session is valid[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should cancel stream with error when the session is no longer valid[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mpub sub[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should broadcast notifications through Redis[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should implement pub/sub for single topic and return notification of single consumer[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should implement pub/sub for single topic and return published element from consumer[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should implement pub/sub for multiple values [0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 9 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(com.blackfynn.notifications.api.TestSQSSource, sbt.ForkMain$SubclassFingerscan@25bbf683, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mTestSQSSource:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mSQSSource[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should process ETL notifications[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 1 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(com.blackfynn.notifications.api.TestNotificationFlows, sbt.ForkMain$SubclassFingerscan@6ec8211c, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mTestNotificationFlows:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32msending messages through the notification flow[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should group and filter by user[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mparseFlow[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should decode ETL notifications[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 2 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(com.blackfynn.notifications.api.TestNotificationParsing, sbt.ForkMain$SubclassFingerscan@7276c8cd, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mTestNotificationParsing:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32ma notification[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should get parsed[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32ma upload notification[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should get parsed[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 2 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0mSummary for ScalaCheck not available.[0m
+[0m[[0m[0minfo[0m] [0m[0mScalaTest[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 47 seconds, 733 milliseconds.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 15[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 5, aborted 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 15, failed 0, canceled 0, ignored 0, pending 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mAll tests passed.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0mPassed: Total 15, Failed 0, Errors 0, Passed 15[0m
+[0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com.blackfynn.notifications.api.TestNotificationStatic[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com.blackfynn.notifications.api.TestRedisPubSub[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com.blackfynn.notifications.api.TestSQSSource[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com.blackfynn.notifications.api.TestNotificationFlows[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com.blackfynn.notifications.api.TestNotificationParsing[0m

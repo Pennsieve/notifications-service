@@ -1,0 +1,17 @@
+[0m[[0m[33mwarn[0m] [0m[0m/Users/joost/Code/pennsieve/notifications-service/notifications-service/src/test/scala/com/blackfynn/notifications/api/TestNotificationFlows.scala:72:12: match may not be exhaustive.[0m
+[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following inputs: Streamed(_), Streamed(_), Strict(_)[0m
+[0m[[0m[33mwarn[0m] [0m[0m      .map {[0m
+[0m[[0m[33mwarn[0m] [0m[0m           ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/joost/Code/pennsieve/notifications-service/notifications-service/src/test/scala/com/blackfynn/notifications/api/NotificationsBaseSpec.scala:42:36: class ActorMaterializer in package stream is deprecated (since 2.6.0): The Materializer now has all methods the ActorMaterializer used to have[0m
+[0m[[0m[33mwarn[0m] [0m[0m  implicit val streamMaterializer: ActorMaterializer = ActorMaterializer()[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                   ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/joost/Code/pennsieve/notifications-service/notifications-service/src/test/scala/com/blackfynn/notifications/api/NotificationsBaseSpec.scala:42:56: method apply in object ActorMaterializer is deprecated (since 2.6.0): Use the system wide materializer with stream attributes or configuration settings to change defaults[0m
+[0m[[0m[33mwarn[0m] [0m[0m  implicit val streamMaterializer: ActorMaterializer = ActorMaterializer()[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                       ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/joost/Code/pennsieve/notifications-service/notifications-service/src/test/scala/com/blackfynn/notifications/api/TestNotificationParsing.scala:19:31: method apply in object ActorMaterializer is deprecated (since 2.6.0): Use the system wide materializer with stream attributes or configuration settings to change defaults[0m
+[0m[[0m[33mwarn[0m] [0m[0m  implicit val materializer = ActorMaterializer()[0m
+[0m[[0m[33mwarn[0m] [0m[0m                              ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/joost/Code/pennsieve/notifications-service/notifications-service/src/test/scala/com/blackfynn/notifications/api/TestNotificationStatic.scala:17:31: method apply in object ActorMaterializer is deprecated (since 2.6.0): Use the system wide materializer with stream attributes or configuration settings to change defaults[0m
+[0m[[0m[33mwarn[0m] [0m[0m  implicit val materializer = ActorMaterializer()[0m
+[0m[[0m[33mwarn[0m] [0m[0m                              ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m5 warnings found[0m
