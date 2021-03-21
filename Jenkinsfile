@@ -35,7 +35,7 @@ node("executor") {
         }
     }
 
-    if (["master"].contains(env.BRANCH_NAME)) {
+    if (["main"].contains(env.BRANCH_NAME)) {
         stage("Docker") {
             withCredentials([pennsieveNexusCreds]) {
                 sh "$sbt notifications-service/docker"
