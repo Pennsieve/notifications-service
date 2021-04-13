@@ -1,6 +1,6 @@
-// Copyright (c) 2017 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2017 Pennsieve All Rights Reserved.
 
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.Keep
@@ -10,15 +10,16 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.RouteConcatenation._
 import akka.stream.ActorMaterializer
 import software.amazon.awssdk.services.sqs.model.{ Message => SQSMessage }
-import com.blackfynn.akka.http.{ HealthCheck, HealthCheckService }
-import com.blackfynn.aws.queue.{
+import com.pennsieve.akka.http.{ HealthCheck, HealthCheckService }
+import com.pennsieve.aws.queue.{
   AWSSQSContainer,
   LocalSQSContainer,
   SQSContainer
 }
-import com.blackfynn.core.utilities._
-import com.blackfynn.domain.CoreError
-import com.blackfynn.notifications.NotificationMessage
+import com.pennsieve.aws.cognito._
+import com.pennsieve.core.utilities._
+import com.pennsieve.domain.CoreError
+import com.pennsieve.notifications.NotificationMessage
 import com.typesafe.scalalogging.StrictLogging
 import com.typesafe.config.{ Config, ConfigFactory }
 import net.ceedubs.ficus.Ficus._
@@ -35,6 +36,7 @@ object NotificationWebServer extends App with StrictLogging {
       with DatabaseContainer
       with SQSContainer
       with RedisContainer
+      with CognitoContainer
 
   implicit lazy val system: ActorSystem = ActorSystem("notifications")
   implicit lazy val materializer: ActorMaterializer = ActorMaterializer()
@@ -53,9 +55,11 @@ object NotificationWebServer extends App with StrictLogging {
     if (isLocal) {
       new InsecureContainer(config) with InsecureCoreContainer
       with DatabaseContainer with LocalSQSContainer with RedisContainer
+      with LocalCognitoContainer
     } else {
       new InsecureContainer(config) with InsecureCoreContainer
       with DatabaseContainer with AWSSQSContainer with RedisContainer
+      with AWSCognitoContainer
     }
 
   val healthCheck = new HealthCheckService(

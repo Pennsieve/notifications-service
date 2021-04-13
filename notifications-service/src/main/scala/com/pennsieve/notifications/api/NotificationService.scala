@@ -1,6 +1,6 @@
-// Copyright (c) 2019 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve All Rights Reserved.
 
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
 import java.time.Instant
 
@@ -20,19 +20,19 @@ import akka.util.ByteString
 import akka.{ Done, NotUsed }
 import cats.data.EitherT
 import cats.implicits._
-import com.blackfynn.akka.http.RouteService
-import com.blackfynn.akka.http.directives.AuthorizationDirectives._
-import com.blackfynn.auth.middleware.Jwt
-import com.blackfynn.core.utilities.FutureEitherHelpers.implicits._
-import com.blackfynn.domain
-import com.blackfynn.domain.Error
-import com.blackfynn.models.User
-import com.blackfynn.managers.SessionManager
-import com.blackfynn.notifications.MessageType._
-import com.blackfynn.notifications.api.NotificationWebServer.DIContainer
-import com.blackfynn.notifications.api.db.notifications
-import com.blackfynn.notifications.{ NotificationMessage, _ }
-import com.blackfynn.traits.PostgresProfile.api._
+import com.pennsieve.akka.http.RouteService
+import com.pennsieve.akka.http.directives.AuthorizationDirectives._
+import com.pennsieve.auth.middleware.Jwt
+import com.pennsieve.core.utilities.FutureEitherHelpers.implicits._
+import com.pennsieve.domain
+import com.pennsieve.domain.Error
+import com.pennsieve.models.User
+import com.pennsieve.notifications.MessageType._
+import com.pennsieve.notifications.api.NotificationWebServer.DIContainer
+import com.pennsieve.notifications.api.db.notifications
+import com.pennsieve.notifications.{ NotificationMessage, _ }
+import com.pennsieve.notifications._
+import com.pennsieve.traits.PostgresProfile.api._
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.LazyLogging
 import io.circe.generic.semiauto._
@@ -229,14 +229,10 @@ class NotificationStream(
     * On the other end, read messages published through Redis. If they are for
     * this user, send them over the socket.
     */
-  def webSocketNotificationFlow(
-    sessionId: String,
-    user: User,
-    sessionManager: SessionManager
-  ): Flow[Message, Message, NotUsed] = {
+  def webSocketNotificationFlow(user: User): Flow[Message, Message, NotUsed] = {
     parseWebSocketMessages
-      .via(PongMonitor(freshnessThreshold.seconds, sessionId))
-      .via(SessionMonitor(keepAliveInterval.seconds, sessionId, sessionManager))
+      .via(PongMonitor(freshnessThreshold.seconds))
+      //  .via(SessionMonitor(keepAliveInterval.seconds, sessionId, sessionManager))
       // All other incoming messages are ignored. On the other side of the
       // coupling, the flow picks up messages from Redis pub/sub source.
       .via(
@@ -342,25 +338,16 @@ class NotificationService(
   // *** Routes ***
 
   def userRoute: Route =
-    jwtUser(insecureContainer, realm = realm)(jwtConfig, system.dispatcher) {
-      authContext =>
-        {
-          authContext.session match {
-            case Some(sessionId) =>
-              path("connect") {
-                handleWebSocketMessages(
-                  notificationStream
-                    .webSocketNotificationFlow(
-                      sessionId,
-                      authContext.user,
-                      insecureContainer.sessionManager
-                    )
-                )
-              }
-            case None =>
-              complete(Future.failed(new Exception("missing session")))
-          }
-        }
+    internalJwtUser(insecureContainer, realm = realm)(
+      jwtConfig,
+      system.dispatcher
+    ) { authContext =>
+      path("connect") {
+        handleWebSocketMessages(
+          notificationStream
+            .webSocketNotificationFlow(authContext.user)
+        )
+      }
     } ~
       path("sendMention") {
         post {
@@ -371,7 +358,11 @@ class NotificationService(
       }
 
   def adminRoute: Route =
-    admin(insecureContainer, realm = realm)(jwtConfig, system.dispatcher) { _ =>
+    admin(insecureContainer, realm = realm)(
+      jwtConfig,
+      insecureContainer.cognitoConfig,
+      system.dispatcher
+    ) { _ =>
       path("send") {
         post {
           entity(as[NotificationMessage]) { n =>

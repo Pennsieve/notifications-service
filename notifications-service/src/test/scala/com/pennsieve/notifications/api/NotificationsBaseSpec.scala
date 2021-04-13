@@ -1,18 +1,19 @@
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
-import com.blackfynn.aws.queue.LocalSQSContainer
-import com.blackfynn.core.utilities._
-import com.blackfynn.db.UserMapper
-import com.blackfynn.models.{ NodeCodes, Organization }
-import com.blackfynn.notifications.api.NotificationWebServer.DIContainer
-import com.blackfynn.test.{
+import com.pennsieve.aws.queue.LocalSQSContainer
+import com.pennsieve.core.utilities._
+import com.pennsieve.db.UserMapper
+import com.pennsieve.models.{ NodeCodes, Organization }
+import com.pennsieve.notifications.api.NotificationWebServer.DIContainer
+import com.pennsieve.aws.cognito._
+import com.pennsieve.test.{
   PersistantTestContainers,
   PostgresSeedDockerContainer,
   RedisDockerContainer,
   SQSDockerContainer
 }
-import com.blackfynn.test.helpers.TestDatabase
-import com.blackfynn.traits.PostgresProfile.api._
+import com.pennsieve.test.helpers.TestDatabase
+import com.pennsieve.traits.PostgresProfile.api._
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.dimafeng.testcontainers.{ ForAllTestContainer, MultipleContainers }
@@ -70,7 +71,7 @@ trait NotificationsBaseSpec
 
     notificationsContainer = new InsecureContainer(config)
     with InsecureCoreContainer with DatabaseContainer with LocalSQSContainer
-    with RedisContainer {
+    with RedisContainer with LocalCognitoContainer {
       override val postgresUseSSL: Boolean = false
     }
   }

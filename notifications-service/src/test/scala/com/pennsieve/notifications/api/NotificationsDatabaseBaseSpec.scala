@@ -1,16 +1,16 @@
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
 import java.util.UUID
 
 import cats.implicits._
-import com.blackfynn.db.{
+import com.pennsieve.db.{
   DatasetStatusMapper,
   DatasetsMapper,
   FilesMapper,
   PackagesMapper,
   UserMapper
 }
-import com.blackfynn.models.{
+import com.pennsieve.models.{
   DBPermission,
   Dataset,
   DatasetStatus,
@@ -20,7 +20,7 @@ import com.blackfynn.models.{
   PackageType,
   User
 }
-import com.blackfynn.traits.PostgresProfile.api._
+import com.pennsieve.traits.PostgresProfile.api._
 import org.scalatest.{ Matchers, Suite }
 
 import scala.concurrent.Future
@@ -93,7 +93,6 @@ trait NotificationsDatabaseBaseSpec
       lastName = "",
       middleInitial = None,
       degree = None,
-      password = password,
       credential = "",
       color = "",
       url = "",

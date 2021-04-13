@@ -1,17 +1,17 @@
-// Copyright (c) 2018 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2018 Pennsieve All Rights Reserved.
 
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
-import com.blackfynn.aws.queue.SQS
-import com.blackfynn.core.utilities.FutureEitherHelpers.implicits._
-import com.blackfynn.db.{ DatasetsMapper, OrganizationsMapper, PackagesMapper }
-import com.blackfynn.dtos.PackageDTO
-import com.blackfynn.dtos.Builders.insecure_basicPackageDTO
-import com.blackfynn.models.{ Dataset, User }
-import com.blackfynn.notifications.MessageType._
-import com.blackfynn.notifications.{ NotificationMessage, _ }
-import com.blackfynn.notifications.api.NotificationWebServer.DIContainer
-import com.blackfynn.traits.PostgresProfile.api._
+import com.pennsieve.aws.queue.SQS
+import com.pennsieve.core.utilities.FutureEitherHelpers.implicits._
+import com.pennsieve.db.{ DatasetsMapper, OrganizationsMapper, PackagesMapper }
+import com.pennsieve.dtos.PackageDTO
+import com.pennsieve.dtos.Builders.insecure_basicPackageDTO
+import com.pennsieve.models.{ Dataset, User }
+import com.pennsieve.notifications.MessageType._
+import com.pennsieve.notifications.{ NotificationMessage, _ }
+import com.pennsieve.notifications.api.NotificationWebServer.DIContainer
+import com.pennsieve.traits.PostgresProfile.api._
 import akka.actor.ActorSystem
 import akka.{ Done, NotUsed }
 import akka.http.scaladsl.model.ws.Message
@@ -32,8 +32,8 @@ import akka.stream.scaladsl.{
 import cats.data.EitherT
 import cats.implicits._
 import software.amazon.awssdk.services.sqs.model.{ Message => SQSMessage }
-import com.blackfynn.domain.{ CoreError, Error, NotFound, ParseError, SqlError }
-import com.blackfynn.service.utilities.Tier
+import com.pennsieve.domain.{ CoreError, Error, NotFound, ParseError, SqlError }
+import com.pennsieve.service.utilities.Tier
 import com.typesafe.config.Config
 import io.circe.java8._
 import io.circe.java8.time._

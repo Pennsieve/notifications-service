@@ -1,0 +1,3 @@
+[0m[[0m[31merror[0m] [0m[0m/Users/jlecoeur/projects/notifications-service/notifications-service/src/test/scala/com/blackfynn/notifications/api/NotificationsBaseSpec.scala:76: error: ; expected but with found[0m
+[0m[[0m[31merror[0m] [0m[0m    with LocalCognitoContainer[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m

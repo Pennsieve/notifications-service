@@ -1,9 +1,15 @@
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
-import com.blackfynn.dtos.{ PackageDTO, WrappedPackage }
-import com.blackfynn.models.{ FileType, PackageState, PackageType, PayloadType }
-import com.blackfynn.notifications.MessageType.{ JobDone, PingT }
-import com.blackfynn.notifications._
+import com.pennsieve.dtos.{ PackageDTO, WrappedPackage }
+import com.pennsieve.models.{ FileType, PackageState, PackageType, PayloadType }
+import com.pennsieve.notifications.MessageType.{ JobDone, PingT }
+import com.pennsieve.notifications._
+import com.pennsieve.notifications.{
+  ETLNotification,
+  JobDoneNotification,
+  NotificationMessage,
+  Pong
+}
 import akka.actor.ActorSystem
 import akka.NotUsed
 import akka.http.scaladsl.common.{
@@ -132,13 +138,7 @@ class TestNotificationFlows
       .repeat(Pong(List(user.id), PingT, "PING", "12345"))
       .throttle(1, 1.second)
       .via(serializeFlowTest)
-      .via(
-        notificationStream.webSocketNotificationFlow(
-          "12345",
-          user,
-          notificationsContainer.sessionManager
-        )
-      )
+      .via(notificationStream.webSocketNotificationFlow(user))
       .via(parseFlowTest)
       .runWith(TestSink.probe[Seq[NotificationMessage]])
 

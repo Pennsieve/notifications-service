@@ -1,10 +1,11 @@
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
 import akka.stream._
 import akka.stream.stage._
 import akka.stream.scaladsl._
 import akka.NotUsed
-import com.blackfynn.notifications._
+import com.pennsieve.notifications._
+
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration._
 
@@ -18,8 +19,7 @@ case class TimeoutException(msg: String) extends Throwable
 object PongMonitor {
 
   def apply(
-    timeout: FiniteDuration,
-    sessionId: String
+    timeout: FiniteDuration
   ): Flow[NotificationMessage, NotificationMessage, NotUsed] =
     Flow
       .fromGraph(GraphDSL.create() {
@@ -39,11 +39,11 @@ object PongMonitor {
           // connection was opened with, we cannot be sure that the user should be
           // getting these notifications. Throw and error to drop the connection
           // and force a reconnect.
-          val checkSession = builder.add(Flow[NotificationMessage].map {
+          /*       val checkSession = builder.add(Flow[NotificationMessage].map {
             case p: Pong if (p.sessionId != sessionId) =>
               throw InvalidSession("Unrecognized session id")
             case m => m
-          })
+          })*/
 
           val drop = builder.add(Flow[NotificationMessage].filter(_ => false))
 
@@ -51,7 +51,7 @@ object PongMonitor {
 
           // @formatter:off
 
-        partitionPongs ~> idleTimeout ~> checkSession ~> drop ~> merge
+        partitionPongs ~> idleTimeout ~> drop ~> merge
         partitionPongs                                        ~> merge
 
         // @formatter:on

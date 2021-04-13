@@ -1,15 +1,16 @@
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import com.blackfynn.dtos.{ PackageDTO, WrappedPackage }
-import com.blackfynn.models.PackageState
-import com.blackfynn.notifications.MessageType.JobDone
-import com.blackfynn.notifications._
+import com.pennsieve.dtos.{ PackageDTO, WrappedPackage }
+import com.pennsieve.models.PackageState
+import com.pennsieve.notifications.MessageType.JobDone
+import com.pennsieve.notifications.{ JobDoneNotification, NotificationMessage }
+import com.pennsieve.notifications._
 import com.typesafe.config.{ Config, ConfigFactory }
 import java.time.ZonedDateTime
 
-import com.blackfynn.models.PackageType
+import com.pennsieve.models.PackageType
 import org.scalatest.FlatSpec
 
 class TestNotificationStatic extends FlatSpec {

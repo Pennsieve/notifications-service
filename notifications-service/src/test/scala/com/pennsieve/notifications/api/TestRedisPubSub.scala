@@ -1,11 +1,17 @@
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
 import akka.stream.alpakka.redis.scaladsl._
 import akka.stream.alpakka.redis._
 import akka.stream.scaladsl._
 import akka.stream.testkit.scaladsl._
 import com.redis._
-import com.blackfynn.notifications._
+import com.pennsieve.notifications._
+import com.pennsieve.notifications.{
+  DatasetUpdateNotification,
+  NotificationMessage,
+  Pong
+}
+
 import org.scalatest.{ Matchers, WordSpec }
 
 import io.lettuce.core.RedisClient
@@ -40,7 +46,7 @@ class TestRedisPubSub
       val sessionId = "12345"
       val (sourceProbe, sinkProbe) = TestSource
         .probe[NotificationMessage]
-        .via(PongMonitor(1.second, sessionId))
+        .via(PongMonitor(1.second))
         .toMat(TestSink.probe[NotificationMessage])(Keep.both)
         .run()
 
@@ -55,7 +61,7 @@ class TestRedisPubSub
       val sessionId = "12345"
       val (_, sinkProbe) = TestSource
         .probe[NotificationMessage]
-        .via(PongMonitor(1.second, sessionId))
+        .via(PongMonitor(1.second))
         .toMat(TestSink.probe[NotificationMessage])(Keep.both)
         .run()
 
@@ -68,7 +74,7 @@ class TestRedisPubSub
       val sessionId = "12345"
       val (sourceProbe, sinkProbe) = TestSource
         .probe[NotificationMessage]
-        .via(PongMonitor(1.second, sessionId))
+        .via(PongMonitor(1.second))
         .toMat(TestSink.probe[NotificationMessage])(Keep.both)
         .run()
 
@@ -85,25 +91,12 @@ class TestRedisPubSub
     "stream normally while session is valid" in {
       val user = createUser()
 
-      val session = notificationsContainer.sessionManager
-        .generateBrowserSession(user)
-        .await
-        .right
-        .get
-
       val messages = List(1 to 5) map (
         i => Pong(users = List(0), message = s"PONG $i", sessionId = "54321")
       )
 
       val sinkProbe = Source(messages)
         .throttle(1, 1.second)
-        .via(
-          SessionMonitor(
-            1.second,
-            session.uuid,
-            notificationsContainer.sessionManager
-          )
-        )
         .toMat(TestSink.probe[NotificationMessage])(Keep.right)
         .run()
 
@@ -115,21 +108,8 @@ class TestRedisPubSub
     "cancel stream with error when the session is no longer valid" in {
       val user = createUser()
 
-      val session = notificationsContainer.sessionManager
-        .generateBrowserSession(user)
-        .await
-        .right
-        .get
-
       val (sourceProbe, sinkProbe) = TestSource
         .probe[NotificationMessage]
-        .via(
-          SessionMonitor(
-            1.second,
-            session.uuid,
-            notificationsContainer.sessionManager
-          )
-        )
         .toMat(TestSink.probe[NotificationMessage])(Keep.both)
         .run()
 
@@ -138,12 +118,6 @@ class TestRedisPubSub
       sourceProbe.sendNext(msg)
       sinkProbe.request(n = 1)
       sinkProbe.expectNext(msg)
-
-      notificationsContainer.sessionManager.remove(session)
-
-      Thread.sleep(2000)
-
-      sinkProbe.expectError() shouldBe SessionExpired
     }
   }
 

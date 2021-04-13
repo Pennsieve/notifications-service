@@ -1,12 +1,12 @@
-// Copyright (c) 2017 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2017 Pennsieve All Rights Reserved.
 
-package com.blackfynn.notifications.api.db
+package com.pennsieve.notifications.api.db
 
 import java.time.ZonedDateTime
 
-import com.blackfynn.traits.PostgresProfile.api._
-import com.blackfynn.notifications.api.db.implicits._
-import com.blackfynn.notifications.{
+import com.pennsieve.traits.PostgresProfile.api._
+import com.pennsieve.notifications.api.db.implicits._
+import com.pennsieve.notifications.{
   MessageType,
   Notification,
   NotificationMessage

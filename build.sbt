@@ -27,7 +27,7 @@ lazy val akkaHttpVersion = "10.1.11"
 lazy val akkaStreamContribVersion = "0.10"
 lazy val alpakkaVersion = "2.0.1"
 lazy val circeVersion = "0.11.1"
-lazy val coreVersion = "75-efcb657"
+lazy val coreVersion = "38-140a0a5"
 lazy val scalatestVersion = "3.0.1"
 lazy val slickVersion = "3.2.3"
 
@@ -45,9 +45,9 @@ lazy val `notifications-service` = project
       "-Ypartial-unification"
     ),
     libraryDependencies ++= Seq(
-      "com.blackfynn" %% "pennsieve-core" % coreVersion,
-      "com.blackfynn" %% "core-models" % coreVersion,
-      "com.blackfynn" %% "bf-akka-http" % coreVersion,
+      "com.pennsieve" %% "pennsieve-core" % coreVersion,
+      "com.pennsieve" %% "core-models" % coreVersion,
+      "com.pennsieve" %% "bf-akka-http" % coreVersion,
 
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "ch.qos.logback" % "logback-core" % "1.2.3",
@@ -80,8 +80,8 @@ lazy val `notifications-service` = project
       "io.lettuce" % "lettuce-core" % "5.1.2.RELEASE",
 
       // testing deps
-      "com.blackfynn" %% "pennsieve-core" % coreVersion % Test classifier "tests",
-      "com.blackfynn" %% "core-models" % coreVersion % Test,
+      "com.pennsieve" %% "pennsieve-core" % coreVersion % Test classifier "tests",
+      "com.pennsieve" %% "core-models" % coreVersion % Test,
       "com.dimafeng" %% "testcontainers-scala" % "0.38.8" % Test,
       "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test,
       "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,

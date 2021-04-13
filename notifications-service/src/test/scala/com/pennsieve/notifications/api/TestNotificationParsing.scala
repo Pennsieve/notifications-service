@@ -1,7 +1,7 @@
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
-import com.blackfynn.notifications.{ AlertNotification, UploadNotification }
-import com.blackfynn.notifications.MessageType.Alert
+import com.pennsieve.notifications.{ AlertNotification, UploadNotification }
+import com.pennsieve.notifications.MessageType.Alert
 import akka.actor.ActorSystem
 import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model.RequestEntity

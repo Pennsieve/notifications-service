@@ -1,11 +1,11 @@
-package com.blackfynn.notifications.api
+package com.pennsieve.notifications.api
 
 import akka.http.scaladsl.model.ws.{ Message, TextMessage }
 import akka.stream.scaladsl._
 import akka.stream.testkit.scaladsl._
-import com.blackfynn.models.{ FileType, PackageType, PayloadType }
-import com.blackfynn.notifications.MessageType.JobDone
-import com.blackfynn.notifications._
+import com.pennsieve.models.{ FileType, PackageType, PayloadType }
+import com.pennsieve.notifications.MessageType.JobDone
+import com.pennsieve.notifications._
 import io.circe.parser.decode
 import io.circe.syntax._
 import org.scalatest.EitherValues._

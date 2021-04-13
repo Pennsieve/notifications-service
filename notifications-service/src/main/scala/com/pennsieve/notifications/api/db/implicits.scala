@@ -1,9 +1,9 @@
-// Copyright (c) 2017 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2017 Pennsieve All Rights Reserved.
 
-package com.blackfynn.notifications.api.db
+package com.pennsieve.notifications.api.db
 
-import com.blackfynn.notifications.{ MessageType, NotificationMessage }
-import com.blackfynn.traits.PostgresProfile.api._
+import com.pennsieve.notifications.{ MessageType, NotificationMessage }
+import com.pennsieve.traits.PostgresProfile.api._
 
 import io.circe._
 import io.circe.syntax._
