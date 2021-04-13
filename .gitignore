@@ -42,3 +42,4 @@ bin/
 
 .metals/
 .bloop/
+notifications-service/target/
