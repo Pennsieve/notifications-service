@@ -58,7 +58,6 @@ class TestRedisPubSub
     }
 
     "timeout and error when it does not see a pong" in {
-      val sessionId = "12345"
       val (_, sinkProbe) = TestSource
         .probe[NotificationMessage]
         .via(PongMonitor(1.second))
@@ -70,55 +69,6 @@ class TestRedisPubSub
       sinkProbe.expectSubscriptionAndError() shouldBe an[TimeoutException]
     }
 
-    "error when sent a pong for a different session id" in {
-      val sessionId = "12345"
-      val (sourceProbe, sinkProbe) = TestSource
-        .probe[NotificationMessage]
-        .via(PongMonitor(1.second))
-        .toMat(TestSink.probe[NotificationMessage])(Keep.both)
-        .run()
-
-      sourceProbe.sendNext(
-        Pong(users = List(0), message = "PONG", sessionId = "54321")
-      )
-
-      sinkProbe.expectSubscriptionAndError() shouldBe an[InvalidSession]
-    }
-  }
-
-  "Session validator flow" should {
-
-    "stream normally while session is valid" in {
-      val user = createUser()
-
-      val messages = List(1 to 5) map (
-        i => Pong(users = List(0), message = s"PONG $i", sessionId = "54321")
-      )
-
-      val sinkProbe = Source(messages)
-        .throttle(1, 1.second)
-        .toMat(TestSink.probe[NotificationMessage])(Keep.right)
-        .run()
-
-      sinkProbe.request(n = 5)
-      messages.map(sinkProbe.expectNext(_))
-      sinkProbe.expectComplete()
-    }
-
-    "cancel stream with error when the session is no longer valid" in {
-      val user = createUser()
-
-      val (sourceProbe, sinkProbe) = TestSource
-        .probe[NotificationMessage]
-        .toMat(TestSink.probe[NotificationMessage])(Keep.both)
-        .run()
-
-      val msg = Pong(users = List(0), message = "PONG", sessionId = "54321")
-
-      sourceProbe.sendNext(msg)
-      sinkProbe.request(n = 1)
-      sinkProbe.expectNext(msg)
-    }
   }
 
   "pub sub" should {

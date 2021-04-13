@@ -1,1 +1,1 @@
-["com.blackfynn.notifications.api.TestNotificationStatic","com.blackfynn.notifications.api.TestRedisPubSub","com.blackfynn.notifications.api.TestSQSSource","com.blackfynn.notifications.api.TestNotificationFlows","com.blackfynn.notifications.api.TestNotificationParsing"]
+["com.pennsieve.notifications.api.TestRedisPubSub","com.pennsieve.notifications.api.TestNotificationParsing","com.pennsieve.notifications.api.TestNotificationFlows","com.pennsieve.notifications.api.TestSQSSource","com.pennsieve.notifications.api.TestNotificationStatic"]
