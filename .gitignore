@@ -16,6 +16,7 @@ src_managed/
 project/boot/
 project/target/
 project/plugins/project/
+notifications-service/target/
 
 # Scala-IDE specific
 .scala_dependencies
@@ -42,4 +43,5 @@ bin/
 
 .metals/
 .bloop/
-notifications-service/target/
+
+.bsp/

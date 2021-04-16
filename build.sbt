@@ -27,7 +27,7 @@ lazy val akkaHttpVersion = "10.1.11"
 lazy val akkaStreamContribVersion = "0.10"
 lazy val alpakkaVersion = "2.0.1"
 lazy val circeVersion = "0.11.1"
-lazy val coreVersion = "38-140a0a5"
+lazy val coreVersion = "50-e49ffb9"
 lazy val scalatestVersion = "3.0.1"
 lazy val slickVersion = "3.2.3"
 

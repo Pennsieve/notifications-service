@@ -1,7 +1,17 @@
 package com.pennsieve.notifications.api
 
 import com.pennsieve.dtos.{ PackageDTO, WrappedPackage }
-import com.pennsieve.models.{ FileType, PackageState, PackageType, PayloadType }
+import com.pennsieve.models.{
+  FileType,
+  PackageState,
+  PackageType,
+  PayloadType
+}
+import com.pennsieve.models.CognitoId.UserPoolId
+import com.pennsieve.core.utilities.UserAuthContext
+import com.pennsieve.aws.cognito.CognitoPayload
+import java.time.Instant
+import scala.concurrent.duration._
 import com.pennsieve.notifications.MessageType.{ JobDone, PingT }
 import com.pennsieve.notifications._
 import com.pennsieve.notifications.{
@@ -94,6 +104,14 @@ class TestNotificationFlows
       )
     }
 
+    val authContext = new UserAuthContext(
+      user = user,
+      organization = organization,
+      cognitoPayload = Some(
+        CognitoPayload(UserPoolId.randomId(), Instant.now().plusSeconds(60))
+      )
+    )
+
     //expect only odd numbered msgs, since those are the ones that contain user.id
 
     val expected = Vector(
@@ -138,7 +156,7 @@ class TestNotificationFlows
       .repeat(Pong(List(user.id), PingT, "PING", "12345"))
       .throttle(1, 1.second)
       .via(serializeFlowTest)
-      .via(notificationStream.webSocketNotificationFlow(user))
+      .via(notificationStream.webSocketNotificationFlow(authContext))
       .via(parseFlowTest)
       .runWith(TestSink.probe[Seq[NotificationMessage]])
 

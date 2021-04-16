@@ -24,6 +24,7 @@ import com.pennsieve.akka.http.RouteService
 import com.pennsieve.akka.http.directives.AuthorizationDirectives._
 import com.pennsieve.auth.middleware.Jwt
 import com.pennsieve.core.utilities.FutureEitherHelpers.implicits._
+import com.pennsieve.core.utilities.UserAuthContext
 import com.pennsieve.domain
 import com.pennsieve.domain.Error
 import com.pennsieve.models.User
@@ -229,17 +230,19 @@ class NotificationStream(
     * On the other end, read messages published through Redis. If they are for
     * this user, send them over the socket.
     */
-  def webSocketNotificationFlow(user: User): Flow[Message, Message, NotUsed] = {
+  def webSocketNotificationFlow(
+    authContext: UserAuthContext
+  ): Flow[Message, Message, NotUsed] = {
     parseWebSocketMessages
       .via(PongMonitor(freshnessThreshold.seconds))
-      //  .via(SessionMonitor(keepAliveInterval.seconds, sessionId, sessionManager))
+      .via(SessionMonitor(keepAliveInterval.seconds, authContext))
       // All other incoming messages are ignored. On the other side of the
       // coupling, the flow picks up messages from Redis pub/sub source.
       .via(
         Flow
           .fromSinkAndSourceCoupled(Sink.ignore, notificationSource)
       )
-      .filter(messageIsForUser(_, user))
+      .filter(messageIsForUser(_, authContext.user))
       .groupedWithin(aggregationCount, aggregationInterval.seconds)
       .via(serializeSeq)
       .merge(pingSource, eagerComplete = true)
@@ -345,7 +348,7 @@ class NotificationService(
       path("connect") {
         handleWebSocketMessages(
           notificationStream
-            .webSocketNotificationFlow(authContext.user)
+            .webSocketNotificationFlow(authContext)
         )
       }
     } ~

@@ -1,7 +1,7 @@
-[0m[[0m[33mwarn[0m] [0m[0m/Users/jlecoeur/projects/notifications-service/notifications-service/src/main/scala/com/pennsieve/notifications/api/NotificationService.scala:53:17: class ActorMaterializer in package stream is deprecated (since 2.6.0): The Materializer now has all methods the ActorMaterializer used to have[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/jlecoeur/projects/notifications-service/notifications-service/src/main/scala/com/pennsieve/notifications/api/NotificationService.scala:54:17: class ActorMaterializer in package stream is deprecated (since 2.6.0): The Materializer now has all methods the ActorMaterializer used to have[0m
 [0m[[0m[33mwarn[0m] [0m[0m  materializer: ActorMaterializer,[0m
 [0m[[0m[33mwarn[0m] [0m[0m                ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/jlecoeur/projects/notifications-service/notifications-service/src/main/scala/com/pennsieve/notifications/api/NotificationService.scala:254:17: class ActorMaterializer in package stream is deprecated (since 2.6.0): The Materializer now has all methods the ActorMaterializer used to have[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/jlecoeur/projects/notifications-service/notifications-service/src/main/scala/com/pennsieve/notifications/api/NotificationService.scala:257:17: class ActorMaterializer in package stream is deprecated (since 2.6.0): The Materializer now has all methods the ActorMaterializer used to have[0m
 [0m[[0m[33mwarn[0m] [0m[0m  materializer: ActorMaterializer,[0m
 [0m[[0m[33mwarn[0m] [0m[0m                ^[0m
 [0m[[0m[33mwarn[0m] [0m[0m/Users/jlecoeur/projects/notifications-service/notifications-service/src/main/scala/com/pennsieve/notifications/api/NotificationWebServer.scala:42:35: class ActorMaterializer in package stream is deprecated (since 2.6.0): The Materializer now has all methods the ActorMaterializer used to have[0m
