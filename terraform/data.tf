@@ -83,3 +83,14 @@ data "terraform_remote_state" "platform_infrastructure" {
     region = "us-east-1"
   }
 }
+
+# Import Cognito Authentication Data
+data "terraform_remote_state" "authentication_service" {
+  backend = "s3"
+
+  config = {
+    bucket = "${var.aws_account}-terraform-state"
+    key    = "aws/${data.aws_region.current_region.name}/${var.vpc_name}/${var.environment_name}/authentication-service/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
