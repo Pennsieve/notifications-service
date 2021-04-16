@@ -44,7 +44,7 @@ object PongMonitor {
           // and force a reconnect.
           val checkSession = builder.add(Flow[NotificationMessage].map { m =>
             authContext.cognitoPayload match {
-              case Some(payload) if payload.expiresAt.isBefore(Instant.now()) =>
+              case Some(payload) if payload.expiresAt.isAfter(Instant.now()) =>
                 m
               case _ => throw InvalidSession("Expired session")
             }
