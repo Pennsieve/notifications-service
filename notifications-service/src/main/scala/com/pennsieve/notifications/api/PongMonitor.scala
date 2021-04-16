@@ -38,18 +38,6 @@ object PongMonitor {
           val idleTimeout =
             builder.add(Flow[NotificationMessage].idleTimeout(timeout))
 
-          // If the session sent in the Pong is different from the one the
-          // connection was opened with, we cannot be sure that the user should be
-          // getting these notifications. Throw and error to drop the connection
-          // and force a reconnect.
-          val checkSession = builder.add(Flow[NotificationMessage].map { m =>
-            authContext.cognitoPayload match {
-              case Some(payload) if payload.expiresAt.isAfter(Instant.now()) =>
-                m
-              case _ => throw InvalidSession("Expired session")
-            }
-          })
-
           val drop = builder.add(Flow[NotificationMessage].filter(_ => false))
 
           val merge = builder.add(Merge[NotificationMessage](2))
