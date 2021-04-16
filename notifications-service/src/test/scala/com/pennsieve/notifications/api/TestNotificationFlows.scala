@@ -1,12 +1,7 @@
 package com.pennsieve.notifications.api
 
 import com.pennsieve.dtos.{ PackageDTO, WrappedPackage }
-import com.pennsieve.models.{
-  FileType,
-  PackageState,
-  PackageType,
-  PayloadType
-}
+import com.pennsieve.models.{ FileType, PackageState, PackageType, PayloadType }
 import com.pennsieve.models.CognitoId.UserPoolId
 import com.pennsieve.core.utilities.UserAuthContext
 import com.pennsieve.aws.cognito.CognitoPayload

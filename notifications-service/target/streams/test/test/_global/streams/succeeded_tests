@@ -1,9 +1,0 @@
-#Successful Tests
-#Fri Apr 16 08:30:38 EDT 2021
-com.blackfynn.notifications.api.TestNotificationStatic=1618319069223
-com.pennsieve.notifications.api.TestNotificationParsing=1618576227406
-com.pennsieve.notifications.api.TestNotificationFlows=1618576229004
-com.pennsieve.notifications.api.TestNotificationStatic=1618576238075
-com.pennsieve.notifications.api.TestRedisPubSub=1618576226997
-com.pennsieve.notifications.api.TestSQSSource=1618576238017
-com.blackfynn.notifications.api.TestNotificationParsing=1618319105237

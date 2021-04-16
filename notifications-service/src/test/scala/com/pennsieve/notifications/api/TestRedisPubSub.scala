@@ -4,6 +4,8 @@ import akka.stream.alpakka.redis.scaladsl._
 import akka.stream.alpakka.redis._
 import akka.stream.scaladsl._
 import akka.stream.testkit.scaladsl._
+import java.time.Instant
+
 import com.redis._
 import com.pennsieve.notifications._
 import com.pennsieve.notifications.{
@@ -11,14 +13,15 @@ import com.pennsieve.notifications.{
   NotificationMessage,
   Pong
 }
-
 import org.scalatest.{ Matchers, WordSpec }
-
 import io.lettuce.core.RedisClient
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.collection.immutable
+import com.pennsieve.models.CognitoId.UserPoolId
+import com.pennsieve.core.utilities.UserAuthContext
+import com.pennsieve.aws.cognito.CognitoPayload
 
 class TestRedisPubSub
     extends WordSpec
@@ -44,9 +47,18 @@ class TestRedisPubSub
 
     "consume pong messages without timing out" in {
       val sessionId = "12345"
+      val user = createUser()
+      val authContext = new UserAuthContext(
+        user = user,
+        organization = organization,
+        cognitoPayload = Some(
+          CognitoPayload(UserPoolId.randomId(), Instant.now().plusSeconds(60))
+        )
+      )
+
       val (sourceProbe, sinkProbe) = TestSource
         .probe[NotificationMessage]
-        .via(PongMonitor(1.second))
+        .via(PongMonitor(1.second, authContext))
         .toMat(TestSink.probe[NotificationMessage])(Keep.both)
         .run()
 
@@ -58,9 +70,18 @@ class TestRedisPubSub
     }
 
     "timeout and error when it does not see a pong" in {
+      val user = createUser()
+      val authContext = new UserAuthContext(
+        user = user,
+        organization = organization,
+        cognitoPayload = Some(
+          CognitoPayload(UserPoolId.randomId(), Instant.now().plusSeconds(60))
+        )
+      )
+
       val (_, sinkProbe) = TestSource
         .probe[NotificationMessage]
-        .via(PongMonitor(1.second))
+        .via(PongMonitor(1.second, authContext))
         .toMat(TestSink.probe[NotificationMessage])(Keep.both)
         .run()
 

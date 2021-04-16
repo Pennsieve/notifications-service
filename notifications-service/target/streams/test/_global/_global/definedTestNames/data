@@ -1,1 +1,0 @@
-["com.pennsieve.notifications.api.TestRedisPubSub","com.pennsieve.notifications.api.TestNotificationParsing","com.pennsieve.notifications.api.TestNotificationFlows","com.pennsieve.notifications.api.TestSQSSource","com.pennsieve.notifications.api.TestNotificationStatic"]

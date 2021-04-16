@@ -5,7 +5,9 @@ import akka.stream.stage._
 import akka.stream.scaladsl._
 import akka.NotUsed
 import com.pennsieve.notifications._
+import com.pennsieve.core.utilities.UserAuthContext
 
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration._
 
@@ -19,7 +21,8 @@ case class TimeoutException(msg: String) extends Throwable
 object PongMonitor {
 
   def apply(
-    timeout: FiniteDuration
+    timeout: FiniteDuration,
+    authContext: UserAuthContext
   ): Flow[NotificationMessage, NotificationMessage, NotUsed] =
     Flow
       .fromGraph(GraphDSL.create() {
@@ -39,11 +42,13 @@ object PongMonitor {
           // connection was opened with, we cannot be sure that the user should be
           // getting these notifications. Throw and error to drop the connection
           // and force a reconnect.
-          /*       val checkSession = builder.add(Flow[NotificationMessage].map {
-            case p: Pong if (p.sessionId != sessionId) =>
-              throw InvalidSession("Unrecognized session id")
-            case m => m
-          })*/
+          val checkSession = builder.add(Flow[NotificationMessage].map { m =>
+            authContext.cognitoPayload match {
+              case Some(payload) if payload.expiresAt.isBefore(Instant.now()) =>
+                m
+              case _ => throw InvalidSession("Expired session")
+            }
+          })
 
           val drop = builder.add(Flow[NotificationMessage].filter(_ => false))
 

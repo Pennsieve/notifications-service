@@ -234,7 +234,7 @@ class NotificationStream(
     authContext: UserAuthContext
   ): Flow[Message, Message, NotUsed] = {
     parseWebSocketMessages
-      .via(PongMonitor(freshnessThreshold.seconds))
+      .via(PongMonitor(freshnessThreshold.seconds, authContext))
       .via(SessionMonitor(keepAliveInterval.seconds, authContext))
       // All other incoming messages are ignored. On the other side of the
       // coupling, the flow picks up messages from Redis pub/sub source.
