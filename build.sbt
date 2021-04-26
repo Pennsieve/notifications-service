@@ -12,8 +12,8 @@ ThisBuild / credentials += Credentials(
   sys.env("PENNSIEVE_NEXUS_PW")
 )
 
-ThisBuild / scalaVersion := "2.12.8"
-ThisBuild / organization := "com.blackfynn"
+ThisBuild / scalaVersion := "2.12.11"
+ThisBuild / organization := "com.pennsieve"
 
 // Run tests in a separate JVM to prevent resource leaks.
 ThisBuild / Test / fork := true
@@ -134,7 +134,7 @@ lazy val `notifications-service` = project
     scalafmtOnCompile := true,
     coverageExcludedPackages :=
       """
-       | com.blackfynn.notifications.api.NotificationWebServer;
+       | com.pennsieve.notifications.api.NotificationWebServer;
       """.stripMargin.replace("\n", ""),
     coverageMinimum := 25,
     coverageFailOnMinimum := true

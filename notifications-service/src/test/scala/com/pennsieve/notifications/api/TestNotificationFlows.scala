@@ -22,7 +22,6 @@ import akka.http.scaladsl.common.{
   JsonEntityStreamingSupport
 }
 import akka.http.scaladsl.model.ws.{ Message, TextMessage }
-import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{ Flow, Source }
 import akka.stream.testkit.scaladsl.TestSink
 import akka.testkit.TestProbe

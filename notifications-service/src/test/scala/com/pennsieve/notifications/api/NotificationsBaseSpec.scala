@@ -15,7 +15,6 @@ import com.pennsieve.test.{
 import com.pennsieve.test.helpers.TestDatabase
 import com.pennsieve.traits.PostgresProfile.api._
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
 import com.dimafeng.testcontainers.{ ForAllTestContainer, MultipleContainers }
 import com.typesafe.config.{ Config, ConfigFactory, ConfigValueFactory }
 import org.scalatest.{
@@ -40,7 +39,6 @@ trait NotificationsBaseSpec
     with TestDatabase { self: Suite =>
 
   implicit val system: ActorSystem = ActorSystem("system")
-  implicit val streamMaterializer: ActorMaterializer = ActorMaterializer()
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
   var notificationsContainer: DIContainer = _

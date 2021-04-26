@@ -48,7 +48,6 @@ class SQSSource(
   container: DIContainer
 )(implicit
   system: ActorSystem,
-  materializer: ActorMaterializer,
   executionContext: ExecutionContext
 ) {
   implicit val tier: Tier[SQSSource] = Tier[SQSSource]

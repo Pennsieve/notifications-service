@@ -1,7 +1,6 @@
 package com.pennsieve.notifications.api
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
 import com.pennsieve.dtos.{ PackageDTO, WrappedPackage }
 import com.pennsieve.models.PackageState
 import com.pennsieve.notifications.MessageType.JobDone
@@ -15,7 +14,6 @@ import org.scalatest.FlatSpec
 
 class TestNotificationStatic extends FlatSpec {
   implicit val system = ActorSystem("test-system")
-  implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
   val config: Config = ConfigFactory.load()
