@@ -31,7 +31,7 @@ variable "keepalive_interval" {
 }
 
 variable "ping_interval" {
-  default = "20"
+  default = "10"
 }
 
 variable "pennsieve_postgres_database" {

@@ -152,7 +152,7 @@ class NotificationStream(
     val ping =
       new Ping(users, PingT, "PING", Instant.now().getEpochSecond).asJson.noSpaces
     val pingMessage = TextMessage.Strict(ping)
-    Source.tick(0.seconds, pingInterval.seconds, pingMessage)
+    Source.tick(pingInterval.seconds, pingInterval.seconds, pingMessage)
   }
 
   val serializeSeq: Flow[Seq[NotificationMessage], Message, NotUsed] =
