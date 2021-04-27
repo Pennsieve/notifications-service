@@ -26,10 +26,6 @@ variable "freshness_threshold" {
   default = "30"
 }
 
-variable "keepalive_interval" {
-  default = "300"
-}
-
 variable "ping_interval" {
   default = "10"
 }

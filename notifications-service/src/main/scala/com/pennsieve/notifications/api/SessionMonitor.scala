@@ -21,41 +21,15 @@ case object SessionExpired extends Throwable
 object SessionMonitor {
 
   def apply(
-    timeout: FiniteDuration,
     authContext: UserAuthContext
   ): Flow[NotificationMessage, NotificationMessage, NotUsed] =
-    Flow.fromGraph(GraphDSL.create() {
-      implicit builder: GraphDSL.Builder[NotUsed] =>
-        import GraphDSL.Implicits._
-
-        val tick = builder.add(
-          Source.tick(
-            timeout,
-            timeout,
-            KeepAlive(List(), MessageType.KeepAliveT, "Tick")
-          )
-        )
-
-        // Validate the session
-        val checkSession = builder.add(
-          Flow[NotificationMessage]
-            .map(
-              t =>
-                authContext.cognitoPayload match {
-                  case Some(payload)
-                      if payload.expiresAt.isAfter(Instant.now()) =>
-                    t
-                  case _ => throw SessionExpired
-                }
-            )
-            .filter(_ => false)
-        )
-
-        val merge =
-          builder.add(Merge[NotificationMessage](2, eagerComplete = true))
-
-        tick ~> checkSession ~> merge.in(0)
-
-        FlowShape(merge.in(1), merge.out)
-    })
+    Flow[NotificationMessage]
+      .map(
+        msg =>
+          authContext.cognitoPayload match {
+            case Some(payload) if payload.expiresAt.isAfter(Instant.now()) =>
+              msg
+            case _ => throw SessionExpired
+          }
+      )
 }

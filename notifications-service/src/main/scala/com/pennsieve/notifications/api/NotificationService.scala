@@ -57,7 +57,6 @@ class NotificationStream(
 
   val pingInterval = config.as[Int]("notifications.pingInterval")
   val freshnessThreshold = config.as[Int]("notifications.freshnessThreshold")
-  val keepAliveInterval = config.as[Int]("notifications.keepAliveInterval")
   val aggregationInterval = config.as[Int]("notifications.aggregationInterval")
   val aggregationCount = config.as[Int]("notifications.aggregationCount")
 
@@ -222,10 +221,9 @@ class NotificationStream(
       .via(CirceStreamSupport.decode[NotificationMessage])
 
   /**
-    * When a PONG arrives, update the session tracker.
+    * When a PONG arrives keep the connection alive for another 30 seconds.
     *
-    * This flow also contains a keepalive tick that is used to check whether
-    * the users session token is valid.
+    * Close the connection if the users session token is invalid.
     *
     * On the other end, read messages published through Redis. If they are for
     * this user, send them over the socket.
@@ -234,7 +232,7 @@ class NotificationStream(
     authContext: UserAuthContext
   ): Flow[Message, Message, NotUsed] = {
     parseWebSocketMessages
-      .via(SessionMonitor(keepAliveInterval.seconds, authContext))
+      .via(SessionMonitor(authContext))
       .via(PongMonitor(freshnessThreshold.seconds, authContext))
       // All other incoming messages are ignored. On the other side of the
       // coupling, the flow picks up messages from Redis pub/sub source.

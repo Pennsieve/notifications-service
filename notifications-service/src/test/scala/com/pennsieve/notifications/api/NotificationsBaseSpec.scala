@@ -100,10 +100,6 @@ trait NotificationsBaseSpec
         ConfigValueFactory.fromAnyRef(30)
       )
       .withValue(
-        "notifications.keepAliveInterval",
-        ConfigValueFactory.fromAnyRef(60)
-      )
-      .withValue(
         "notifications.aggregationCount",
         ConfigValueFactory.fromAnyRef(5)
       )
