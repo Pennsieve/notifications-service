@@ -34,7 +34,6 @@ object NotificationWebServer extends App with StrictLogging {
       with InsecureCoreContainer
       with DatabaseContainer
       with SQSContainer
-      with RedisContainer
       with CognitoContainer
 
   implicit lazy val system: ActorSystem = ActorSystem("notifications")
@@ -52,19 +51,14 @@ object NotificationWebServer extends App with StrictLogging {
   val insecureContainer: DIContainer =
     if (isLocal) {
       new InsecureContainer(config) with InsecureCoreContainer
-      with DatabaseContainer with LocalSQSContainer with RedisContainer
-      with LocalCognitoContainer
+      with DatabaseContainer with LocalSQSContainer with LocalCognitoContainer
     } else {
       new InsecureContainer(config) with InsecureCoreContainer
-      with DatabaseContainer with AWSSQSContainer with RedisContainer
-      with AWSCognitoContainer
+      with DatabaseContainer with AWSSQSContainer with AWSCognitoContainer
     }
 
   val healthCheck = new HealthCheckService(
-    Map(
-      "postgres" -> HealthCheck.postgresHealthCheck(insecureContainer.db),
-      "redis" -> HealthCheck.redisHealthCheck(insecureContainer.redisClientPool)
-    )
+    Map("postgres" -> HealthCheck.postgresHealthCheck(insecureContainer.db))
   )
 
   val notificationService = new NotificationService(insecureContainer, config)
@@ -81,7 +75,7 @@ object NotificationWebServer extends App with StrictLogging {
   logger.info("Started notification stream")
 
   /**
-    * If the notification stream dies (eg, because of a persistent Redis publish
+    * If the notification stream dies (eg, because of a persistent Postgres publish
     * error) kill the service.
     */
   notificationService.notificationStream.notificationSinkComplete.onComplete {

@@ -5,9 +5,11 @@
         </encoder>
     </appender>
 
-    <logger name="com.blackfynn" level="INFO" />
+    <logger name="com.pennsieve" level="INFO" />
 
     <root level="WARN">
         <appender-ref ref="Console" />
     </root>
+
+
 </configuration>

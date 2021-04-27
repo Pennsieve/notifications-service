@@ -9,7 +9,6 @@ import com.pennsieve.aws.cognito._
 import com.pennsieve.test.{
   PersistantTestContainers,
   PostgresSeedDockerContainer,
-  RedisDockerContainer,
   SQSDockerContainer
 }
 import com.pennsieve.test.helpers.TestDatabase
@@ -35,7 +34,6 @@ trait NotificationsBaseSpec
     with PersistantTestContainers
     with PostgresSeedDockerContainer
     with SQSDockerContainer
-    with RedisDockerContainer
     with TestDatabase { self: Suite =>
 
   implicit val system: ActorSystem = ActorSystem("system")
@@ -69,7 +67,7 @@ trait NotificationsBaseSpec
 
     notificationsContainer = new InsecureContainer(config)
     with InsecureCoreContainer with DatabaseContainer with LocalSQSContainer
-    with RedisContainer with LocalCognitoContainer {
+    with LocalCognitoContainer {
       override val postgresUseSSL: Boolean = false
     }
   }
@@ -84,12 +82,7 @@ trait NotificationsBaseSpec
       .empty()
       .withFallback(postgresContainer.config)
       .withFallback(sqsContainer.config)
-      .withFallback(redisContainer.config)
       .withValue("pennsieve.jwt.key", ConfigValueFactory.fromAnyRef("testkey"))
-      .withValue(
-        "pennsieve.storage.redisDBIndex",
-        ConfigValueFactory.fromAnyRef(3)
-      )
       .withValue("environment", ConfigValueFactory.fromAnyRef("local"))
       .withValue(
         "notifications.pingInterval",
@@ -133,10 +126,8 @@ trait NotificationsBaseSpec
       )
       .withValue("parallelism", ConfigValueFactory.fromAnyRef(1))
       .withValue(
-        "redis.notificationChannel",
-        ConfigValueFactory.fromAnyRef("notifications")
+        "postgres.notificationChannel",
+        ConfigValueFactory.fromAnyRef("notification_service")
       )
-      .withValue("redis.use_ssl", ConfigValueFactory.fromAnyRef(false))
-      .withValue("redis.auth_token", ConfigValueFactory.fromAnyRef(""))
   }
 }
