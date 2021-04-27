@@ -183,8 +183,10 @@ class NotificationStream(
   val parseWebSocketMessages: Flow[Message, NotificationMessage, NotUsed] =
     Flow[Message]
       .collect {
-        case TextMessage.Strict(s) => ByteString(s)
+        case msg: TextMessage => msg // ignore binary messages
       }
+      .mapAsyncUnordered(1)(_.toStrict(5.seconds))
+      .map(strict => ByteString(strict.text))
       .via(CirceStreamSupport.decode[NotificationMessage])
 
   /**
