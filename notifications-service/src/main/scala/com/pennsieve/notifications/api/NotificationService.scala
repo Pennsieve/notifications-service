@@ -51,7 +51,7 @@ import scala.util.{ Failure, Try }
 class NotificationStream(
   config: Config
 )(implicit
-  materializer: ActorMaterializer,
+  system: ActorSystem,
   executionContext: ExecutionContext
 ) extends LazyLogging {
 
@@ -254,7 +254,6 @@ class NotificationService(
   config: Config
 )(implicit
   system: ActorSystem,
-  materializer: ActorMaterializer,
   executionContext: ExecutionContext
 ) extends Directives
     with LazyLogging

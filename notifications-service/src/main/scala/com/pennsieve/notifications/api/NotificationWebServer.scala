@@ -8,7 +8,6 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives.pathPrefix
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.RouteConcatenation._
-import akka.stream.ActorMaterializer
 import software.amazon.awssdk.services.sqs.model.{ Message => SQSMessage }
 import com.pennsieve.akka.http.{ HealthCheck, HealthCheckService }
 import com.pennsieve.aws.queue.{
@@ -39,7 +38,6 @@ object NotificationWebServer extends App with StrictLogging {
       with CognitoContainer
 
   implicit lazy val system: ActorSystem = ActorSystem("notifications")
-  implicit lazy val materializer: ActorMaterializer = ActorMaterializer()
   implicit lazy val executionContext: ExecutionContext =
     system.dispatcher
 

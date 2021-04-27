@@ -11,8 +11,9 @@ import java.time.Instant
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration._
 
-case class InvalidSession(msg: String) extends Throwable
-case class TimeoutException(msg: String) extends Throwable
+case class TimeoutException(msg: String) extends Throwable {
+  override def getMessage = msg
+}
 
 /**
   * Flow that fails with a timeout if it has not seen a `Pong` message within
@@ -43,11 +44,9 @@ object PongMonitor {
           val merge = builder.add(Merge[NotificationMessage](2))
 
           // @formatter:off
-
-        partitionPongs ~> idleTimeout ~> drop ~> merge
-        partitionPongs                                        ~> merge
-
-        // @formatter:on
+          partitionPongs ~> idleTimeout ~> drop ~> merge
+          partitionPongs                        ~> merge
+          // @formatter:on
 
           FlowShape(partitionPongs.in, merge.out)
       })

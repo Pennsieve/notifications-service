@@ -6,7 +6,6 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model.RequestEntity
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import akka.stream.ActorMaterializer
 import org.mdedetrich.akka.http.support.CirceHttpSupport._
 import org.scalatest.{ FlatSpec, Matchers }
 
@@ -16,7 +15,6 @@ import scala.concurrent.duration._
 class TestNotificationParsing extends FlatSpec with Matchers {
 
   implicit val system = ActorSystem("test-system")
-  implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
   "a notification" should "get parsed" in {
