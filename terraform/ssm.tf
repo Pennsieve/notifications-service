@@ -63,12 +63,6 @@ resource "aws_ssm_parameter" "jwt_secret_key" {
   }
 }
 
-resource "aws_ssm_parameter" "keepalive_interval" {
-  name  = "/${var.environment_name}/${var.service_name}/keepalive-interval"
-  type  = "String"
-  value = var.keepalive_interval
-}
-
 resource "aws_ssm_parameter" "ping_interval" {
   name  = "/${var.environment_name}/${var.service_name}/ping-interval"
   type  = "String"

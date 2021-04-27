@@ -110,7 +110,7 @@ class TestRedisPubSub
 
       val sinkProbe = Source(messages)
         .throttle(1, 1.second)
-        .via(SessionMonitor(1.second, authContext))
+        .via(SessionMonitor(authContext))
         .toMat(TestSink.probe[NotificationMessage])(Keep.right)
         .run()
 
@@ -131,7 +131,7 @@ class TestRedisPubSub
 
       val (sourceProbe, sinkProbe) = TestSource
         .probe[NotificationMessage]
-        .via(SessionMonitor(1.second, authContext))
+        .via(SessionMonitor(authContext))
         .toMat(TestSink.probe[NotificationMessage])(Keep.both)
         .run()
 
@@ -143,6 +143,8 @@ class TestRedisPubSub
 
       Thread.sleep(2000)
 
+      sourceProbe.sendNext(msg)
+      sinkProbe.request(n = 1)
       sinkProbe.expectError() shouldBe SessionExpired
     }
   }
