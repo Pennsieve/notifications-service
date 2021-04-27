@@ -1,6 +1,7 @@
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
 ThisBuild / resolvers ++= Seq(
-  "pennsieve-maven-proxy" at "https://nexus.pennsieve.cc/repository/maven-public",
-  Resolver.url("pennsieve-ivy-proxy", url("https://nexus.pennsieve.cc/repository/ivy-public/"))( Patterns("[organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]") ),
+  "Pennsieve Public" at "https://nexus.pennsieve.cc/repository/maven-public",
   Resolver.sonatypeRepo("snapshots"),
   Resolver.bintrayRepo("commercetools", "maven")
 )
@@ -27,7 +28,7 @@ lazy val akkaHttpVersion = "10.1.11"
 lazy val akkaStreamContribVersion = "0.10"
 lazy val alpakkaVersion = "2.0.1"
 lazy val circeVersion = "0.11.1"
-lazy val coreVersion = "50-e49ffb9"
+lazy val coreVersion = "59-f97b617"
 lazy val scalatestVersion = "3.0.1"
 lazy val slickVersion = "3.2.3"
 
@@ -77,7 +78,7 @@ lazy val `notifications-service` = project
       "org.mdedetrich" %% "akka-http-circe" % akkaCirceVersion,
       "com.github.cb372" %% "scalacache-caffeine" % "0.10.0",
 
-      "io.lettuce" % "lettuce-core" % "5.1.2.RELEASE",
+      "com.impossibl.pgjdbc-ng" % "pgjdbc-ng" % "0.8.7",
 
       // testing deps
       "com.pennsieve" %% "pennsieve-core" % coreVersion % Test classifier "tests",
