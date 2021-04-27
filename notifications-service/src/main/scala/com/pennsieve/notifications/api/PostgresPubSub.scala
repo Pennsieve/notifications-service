@@ -168,11 +168,13 @@ object PostgresPubSub extends StrictLogging {
   private def asyncPostgresConnection(
     postgres: PostgresDatabase
   ): PGConnection = {
-    val jdbcBaseUrl: String =
-      s"jdbc:pgsql://${postgres.host}:${postgres.port}/${postgres.database}"
-    val jdbcUrl = {
-      if (postgres.useSSL) jdbcBaseUrl + "?ssl=true&sslmode=verify-ca"
-      else jdbcBaseUrl
+
+    val jdbcUrl: String = {
+      val base =
+        s"jdbc:pgsql://${postgres.host}:${postgres.port}/${postgres.database}"
+
+      if (postgres.useSSL) base + "?ssl.mode=verify-ca"
+      else base
     }
 
     DriverManager
