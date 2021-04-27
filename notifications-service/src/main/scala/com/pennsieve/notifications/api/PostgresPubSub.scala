@@ -169,6 +169,9 @@ object PostgresPubSub extends StrictLogging {
     postgres: PostgresDatabase
   ): PGConnection = {
 
+    // Load driver
+    Class.forName("com.impossibl.postgres.jdbc.PGDriver")
+
     val jdbcUrl: String = {
       val base =
         s"jdbc:pgsql://${postgres.host}:${postgres.port}/${postgres.database}"
