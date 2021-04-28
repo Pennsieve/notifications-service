@@ -176,7 +176,8 @@ object PostgresPubSub extends StrictLogging {
       val base =
         s"jdbc:pgsql://${postgres.host}:${postgres.port}/${postgres.database}"
 
-      if (postgres.useSSL) base + "?ssl.mode=verify-ca&ssl.ca.certificate.file=/home/pennsieve/.postgresql/root.crt"
+      if (postgres.useSSL)
+        base + "?ssl.mode=verify-ca&ssl.ca.certificate.file=/home/pennsieve/.postgresql/root.crt"
       else base
     }
 
