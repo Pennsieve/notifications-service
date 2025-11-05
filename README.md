@@ -1,3 +1,5 @@
+## Retired: This service has been retired and its AWS resources deleted.
+
 ## Notifications
 
 The notifications api sends messages to individual users via websocket connections. Messages can be sent via an SQS queue or the REST API.
