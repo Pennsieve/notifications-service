@@ -35,23 +35,4 @@ node("executor") {
         }
     }
 
-    if (["main"].contains(env.BRANCH_NAME)) {
-        stage("Docker") {
-            withCredentials([pennsieveNexusCreds]) {
-                sh "$sbt notifications-service/docker"
-            }
-
-            sh "docker tag pennsieve/notifications-service:latest pennsieve/notifications-service:$imageTag"
-            sh "docker push pennsieve/notifications-service:latest"
-            sh "docker push pennsieve/notifications-service:$imageTag"
-        }
-
-        stage("Deploy") {
-            build job: "service-deploy/pennsieve-non-prod/us-east-1/dev-vpc-use1/dev/notifications-service",
-            parameters: [
-                string(name: 'IMAGE_TAG', value: imageTag),
-                string(name: 'TERRAFORM_ACTION', value: 'apply')
-            ]
-        }
-    }
 }
